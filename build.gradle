@@ -2,10 +2,12 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'maven-publish'
+    id 'signing'
 }
 
 group = 'dev.gregorius.test'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '17'
 
 repositories {
@@ -17,6 +19,80 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+test {
     useJUnitPlatform()
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'github.actions.test'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'Github Actions Test'
+                description = 'This is a test for Github actions'
+                url = 'https://github.com/olivergregorius/github.actions.test'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'olivergregorius'
+                        name = 'Oliver Gregorius'
+                        email = 'oliver@gregorius.dev'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/olivergregorius/github.actions.test.git'
+                    developerConnection = 'scm:git:https://github.com/olivergregorius/github.actions.test.git'
+                    url = 'https://github.com/olivergregorius/github.actions.test'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "unknown"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "unknown"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }

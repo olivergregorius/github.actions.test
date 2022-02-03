@@ -1,0 +1,25 @@
+name: Gradle Publish
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Gradle Build
+        run: ./gradlew build
+
+      - name: Gradle Publish
+        run: ./gradlew publish
