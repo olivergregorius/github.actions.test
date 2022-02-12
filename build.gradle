@@ -133,3 +133,7 @@ sonarqube {
         property "sonar.coverage.exclusions", testCoverageExludes.join(",")
     }
 }
+
+tasks.register("getVersion") {
+    println(project.version)
+}

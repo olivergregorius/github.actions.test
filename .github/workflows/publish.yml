@@ -19,4 +19,4 @@ jobs:
           distribution: temurin
 
       - name: Gradle Build
-        run: ./gradlew build -PreleaseVersion=$GITHUB_REF_NAME --info
+        run: ./gradlew build getVersion -PreleaseVersion=$GITHUB_REF_NAME --info
