@@ -8,8 +8,10 @@ plugins {
     id 'signing'
 }
 
+def snapshotVersion = "0.1.0-SNAPSHOT"
+
 group = 'dev.gregorius.test'
-version = '0.0.1'
+version = project.hasProperty("releaseVersion") ? releaseVersion : snapshotVersion
 sourceCompatibility = '17'
 
 repositories {
