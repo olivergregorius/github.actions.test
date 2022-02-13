@@ -31,8 +31,5 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Gradle Build
-        run: ./gradlew build sonarqube --info
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Gradle Release check
+        run: ./gradlew releaseCheck --info
