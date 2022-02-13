@@ -32,4 +32,4 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Gradle Release check
-        run: ./gradlew releaseCheck --info
+        run: ./gradlew releaseCheck -Pci=$CI --info
