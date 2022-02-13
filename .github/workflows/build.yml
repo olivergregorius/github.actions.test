@@ -34,4 +34,4 @@ jobs:
       - name: Gradle Release check
         run: ./gradlew releaseCheck --info
         env:
-          ORG_GRADLE_PROJECT_ci: ${{ CI }}
+          ORG_GRADLE_PROJECT_ci: ${{ env.CI }}
