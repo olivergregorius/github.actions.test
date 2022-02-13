@@ -141,8 +141,8 @@ tasks.register("getVersion") {
 tasks.register("releaseCheck") {
     doFirst {
         // Check if release is performed in the pipeline
-        if (project.hasProperty("ci") && ci) {
-            println(ci)
+        if (project.hasProperty("CI") && CI) {
+            println(CI)
             throw new InvalidUserDataException("Release must be performed in the pipeline!")
         }
     }
